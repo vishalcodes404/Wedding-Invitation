@@ -1348,3 +1348,50 @@ body {
   transform: translateY(0);
 }
 
+/* =========================================================
+   HIGH-PERFORMANCE HARDWARE ACCELERATION & INSTANT RESPONSE
+   ========================================================= */
+/* Instant mobile tap responsiveness (removes 300ms delay) */
+button,
+a,
+.floating-action,
+.temple-center-medallion,
+.gates-ring-btn,
+.movable-diyas-banner-wrap,
+.movable-marigold-bells-wrap,
+.movable-garland-wrap {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* GPU Hardware Acceleration for 3D and floating animations */
+.wooden-door-leaf,
+.intro-temple-overlay,
+.temple-center-medallion,
+.gates-wing,
+.floating-action,
+.hero-couple-img,
+.card-cartoon-character,
+.movable-diyas-banner-wrap,
+.movable-marigold-bells-wrap,
+.movable-garland-wrap {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Off-screen Content Visibility optimization: skips layout/render passes until scrolled */
+.events-section,
+.venue-section,
+.rsvp-section,
+.thankyou-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 550px;
+}
+
+/* Crisp image rendering across retina and standard displays */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+

@@ -177,9 +177,6 @@ function FlowerShower({ active, fading = false }) {
       ctx.bezierCurveTo(-w * 0.85, h * 0.35, -w * 0.75, -h * 0.35, 0, -h * 0.45);
 
       ctx.fillStyle = p.color.fill;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.12)';
-      ctx.shadowBlur = 4;
-      ctx.shadowOffsetY = 2;
       ctx.fill();
 
       // Delicate petal central vein
@@ -237,6 +234,8 @@ function FlowerShower({ active, fading = false }) {
         zIndex: 9998,
         transition: 'opacity 1s cubic-bezier(0.4, 0, 0.2, 1)',
         opacity: fading ? 0 : 1,
+        willChange: 'opacity',
+        transform: 'translateZ(0)',
       }}
     />
   );
@@ -690,6 +689,10 @@ export default function WeddingInvitation() {
             src="/images/couple_full.png"
             alt="Sunil Kumar & Santhiya"
             className="hero-couple-img"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            draggable={false}
           />
         </div>
       </section>
@@ -731,6 +734,9 @@ export default function WeddingInvitation() {
             src="/images/cartoon_groom_clean.png"
             alt="Traditional South Indian Groom"
             className="card-cartoon-character groom-char"
+            loading="eager"
+            decoding="async"
+            draggable={false}
           />
         </div>
 
@@ -753,6 +759,9 @@ export default function WeddingInvitation() {
             src="/images/cartoon_bride_clean.png"
             alt="Traditional South Indian Bride in Saree"
             className="card-cartoon-character bride-char"
+            loading="eager"
+            decoding="async"
+            draggable={false}
           />
 
           {/* Right Side: Bride Details */}
@@ -853,6 +862,9 @@ export default function WeddingInvitation() {
             alt=""
             className="event-corner-peacock"
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
           />
 
           <h3 className="event-title font-serif-title">Wedding Ceremony</h3>
@@ -906,6 +918,9 @@ export default function WeddingInvitation() {
             alt=""
             className="event-corner-peacock"
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
           />
 
           <h3 className="event-title font-serif-title">Grand Reception</h3>
@@ -1015,6 +1030,9 @@ export default function WeddingInvitation() {
             src="/images/musicians_footer.jpg"
             alt="Royal Wedding Musicians Procession"
             className="musicians-footer-illustration"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
           />
         </div>
       </section>
