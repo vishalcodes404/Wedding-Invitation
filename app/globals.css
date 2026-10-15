@@ -207,10 +207,10 @@ body {
   100% { transform: translateY(-4px); }
 }
 
-/* Hero Bottom Scroll Indicator at Marked Carpet Place */
-.hero-scroll-indicator {
+/* Minimalist Luxury Scroll Symbol at Marked Carpet Place (Tiny & Dainty) */
+.hero-scroll-symbol {
   position: absolute;
-  bottom: 8px;
+  bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -218,57 +218,73 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1px;
+  gap: 3px;
   cursor: pointer;
-  padding: 3px 14px 4px;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(212, 175, 55, 0.7);
-  border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 0 8px rgba(255, 255, 255, 0.8);
-  animation: heroScrollBob 2.2s infinite ease-in-out;
-  transition: transform 0.2s ease, background 0.2s ease;
+  background: transparent;
+  padding: 2px 6px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.hero-scroll-indicator:hover {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: #b8862b;
+.hero-scroll-symbol:active {
+  transform: translateX(-50%) scale(0.92);
 }
 
-.hero-scroll-indicator:active {
-  transform: translateX(-50%) scale(0.95);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.hero-scroll-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #64151b;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
-  padding-left: 0.28em;
-}
-
-.hero-scroll-arrow {
+/* Delicate 13px x 21px golden mouse scroll capsule */
+.scroll-symbol-capsule {
   width: 13px;
-  height: 13px;
-  stroke: #b8862b;
-  display: block;
+  height: 21px;
+  border: 1.5px solid #d4af37;
+  border-radius: 9px;
+  background: rgba(40, 15, 10, 0.35);
+  display: flex;
+  justify-content: center;
+  padding-top: 3px;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
 }
 
-@keyframes heroScrollBob {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0);
+/* Tiny golden rolling dot animation */
+.scroll-symbol-dot {
+  width: 2.5px;
+  height: 4.5px;
+  background: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 0 3px #f7e199;
+  animation: scrollDotSlide 1.8s infinite ease-in-out;
+}
+
+@keyframes scrollDotSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
   }
-  50% {
-    transform: translateX(-50%) translateY(4px);
+  30% {
+    opacity: 1;
   }
+  80% {
+    opacity: 1;
+    transform: translateY(7px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+}
+
+/* Small, delicate "scroll" label */
+.hero-scroll-mini-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fff8e8;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 6px rgba(212, 175, 55, 0.6);
+  padding-left: 0.22em;
+  line-height: 1;
 }
 
 /* =========================================================

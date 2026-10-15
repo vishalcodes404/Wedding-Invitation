@@ -727,9 +727,9 @@ export default function WeddingInvitation() {
           />
         </div>
 
-        {/* Scroll Indicator at Marked Carpet Place */}
+        {/* Minimalist Scroll Symbol at Marked Carpet Place */}
         <div
-          className="hero-scroll-indicator"
+          className="hero-scroll-symbol"
           onClick={() => {
             const nextSec = document.querySelector('.couple-section');
             if (nextSec) {
@@ -738,12 +738,12 @@ export default function WeddingInvitation() {
           }}
           role="button"
           tabIndex={0}
-          title="Scroll down to meet the couple"
+          title="Scroll down"
         >
-          <span className="hero-scroll-text">SCROLL</span>
-          <svg className="hero-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M7 10l5 5 5-5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <div className="scroll-symbol-capsule">
+            <span className="scroll-symbol-dot"></span>
+          </div>
+          <span className="hero-scroll-mini-text">scroll</span>
         </div>
       </section>
 
