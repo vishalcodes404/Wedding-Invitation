@@ -1,0 +1,2 @@
+Place your wedding song here named 'song.mp3'.
+If not present, a graceful traditional web audio melody will play automatically.
