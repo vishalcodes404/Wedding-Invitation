@@ -713,7 +713,7 @@ export default function WeddingInvitation() {
           </p>
           <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
 
-          {/* Scroll mention below the date 13 Nov 2026 */}
+          {/* Scroll mention below the date 13 Nov 2026 - Elegant compact symbol */}
           <div
             className="hero-date-scroll"
             onClick={() => {
@@ -725,10 +725,14 @@ export default function WeddingInvitation() {
             role="button"
             tabIndex={0}
             title="Scroll down"
+            aria-label="Scroll down to invitation"
           >
+            <div className="hero-scroll-symbol">
+              <span className="hero-scroll-dot" />
+            </div>
             <span className="hero-date-scroll-text">SCROLL</span>
-            <svg className="hero-date-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M7 10l5 5 5-5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <svg className="hero-date-scroll-arrow" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1L5 5L9 1" stroke="#b8862b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         </div>
