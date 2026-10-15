@@ -14,9 +14,9 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Critical Asset Preloading for Instant Door & Mandapam Display */}
-        <link rel="preload" as="image" href="/images/temple_frame_cutout.webp" fetchPriority="high" type="image/webp" />
-        <link rel="preload" as="image" href="/images/temple_door_left.webp" fetchPriority="high" type="image/webp" />
-        <link rel="preload" as="image" href="/images/temple_door_right.webp" fetchPriority="high" type="image/webp" />
+        <link rel="preload" as="image" href="/images/palace_door_left.webp" fetchPriority="high" type="image/webp" />
+        <link rel="preload" as="image" href="/images/palace_door_right.webp" fetchPriority="high" type="image/webp" />
+        <link rel="preload" as="image" href="/images/palace_courtyard_bg.webp" fetchPriority="high" type="image/webp" />
         <link rel="preload" as="image" href="/images/hero_mandap.webp" type="image/webp" />
         <link rel="preload" as="image" href="/images/couple_full.webp" type="image/webp" />
         <link rel="preload" as="image" href="/images/cartoon_groom_clean.webp" type="image/webp" />

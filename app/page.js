@@ -480,13 +480,13 @@ export default function WeddingInvitation() {
   const [introOpened, setIntroOpened] = useState(false);
   const [introDismissed, setIntroDismissed] = useState(false);
 
-  // Flower Shower state (5-second duration with graceful fade)
+  // Flower Shower state (10-second duration with graceful fade)
   const [flowersFlowing, setFlowersFlowing] = useState(false);
   const [flowersFading, setFlowersFading] = useState(false);
   const flowerTimerRef = useRef(null);
   const flowerFadeTimerRef = useRef(null);
 
-  // Trigger flower shower for exactly 5 seconds with smooth fade
+  // Trigger flower shower for exactly 10 seconds with smooth fade
   const triggerFlowerShower = () => {
     if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current);
     if (flowerFadeTimerRef.current) clearTimeout(flowerFadeTimerRef.current);
@@ -494,16 +494,16 @@ export default function WeddingInvitation() {
     setFlowersFading(false);
     setFlowersFlowing(true);
 
-    // After 4 seconds, begin smooth 1-second fade out
+    // After 9 seconds, begin smooth 1-second fade out
     flowerFadeTimerRef.current = setTimeout(() => {
       setFlowersFading(true);
-    }, 4000);
+    }, 9000);
 
-    // After 5 seconds, turn off flower shower
+    // After 10 seconds, turn off flower shower
     flowerTimerRef.current = setTimeout(() => {
       setFlowersFlowing(false);
       setFlowersFading(false);
-    }, 5000);
+    }, 10000);
   };
 
   const handleTriggerFlowerShower = (e) => {
@@ -645,48 +645,31 @@ export default function WeddingInvitation() {
   return (
     <main className={`invitation-container ${!introDismissed ? 'door-active' : ''}`}>
       {/* =========================================================
-          INTRO SCREEN: AUTHENTIC WOODEN TEMPLE DOOR (GOPURAM SANCTUM)
+          INTRO SCREEN: ROYAL PALACE GLASS & BRASS GATES (MUGHAL FLORAL ARCH)
           ========================================================= */}
       {!introDismissed && (
         <div
           className={`temple-intro-overlay ${introOpened ? 'intro-gate-opened' : ''}`}
           onClick={handleOpenIntroGate}
         >
-          {/* Temple Stage Viewport with 3D Zoom & Perspective */}
-          <div className="temple-entrance-stage">
-            {/* 1. Deepest Background: Glowing Sacred Temple Sanctum */}
-            <div className="temple-sanctum-bg">
-              <div className="temple-sanctum-glow"></div>
+          {/* Palace Stage Viewport with 3D Zoom & Perspective */}
+          <div className="temple-entrance-stage palace-entrance-stage">
+            {/* 1. Deepest Background: Glowing Sacred Palace Courtyard & Fountain */}
+            <div className="temple-sanctum-bg palace-sanctum-bg">
+              <div className="temple-sanctum-glow palace-sanctum-glow"></div>
             </div>
 
-            {/* 2. Authentic Carved Teakwood Double Doors (3D Swing Open) */}
-            <div className="temple-doors-container">
-              {/* Left Wooden Door Leaf */}
-              <div className="wooden-door-leaf wooden-door-left"></div>
+            {/* 2. Authentic Royal Palace Double Doors (3D Swing Open) */}
+            <div className="temple-doors-container palace-doors-container">
+              {/* Left Palace Door Leaf */}
+              <div className="wooden-door-leaf wooden-door-left palace-door-left"></div>
 
-              {/* Right Wooden Door Leaf */}
-              <div className="wooden-door-leaf wooden-door-right"></div>
+              {/* Right Palace Door Leaf */}
+              <div className="wooden-door-leaf wooden-door-right palace-door-right"></div>
             </div>
 
-            {/* 3. Foreground Stone Temple Frame (Carved Pillars, Arch & Toran) */}
-            <div className="temple-frame-foreground"></div>
-
-            {/* 4. Center Auspicious Couple Medallion (S & S - TAP TO OPEN) */}
-            <div
-              className={`temple-center-medallion ${introOpened ? 'medallion-fade' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleOpenIntroGate();
-              }}
-            >
-              <div className="medallion-inner">
-                <span className="medallion-monogram font-serif-title">
-                  S<span className="medallion-amp">&amp;</span>S
-                </span>
-                <div className="medallion-sub-rule"></div>
-                <span className="medallion-tap-text">TAP TO OPEN</span>
-              </div>
-            </div>
+            {/* 3. Center Medallion Subtle Breathing Glow */}
+            <div className="palace-medallion-pulse"></div>
           </div>
         </div>
       )}
@@ -713,7 +696,7 @@ export default function WeddingInvitation() {
           </p>
           <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
 
-          {/* Scroll Word & Scroll Symbol in White below Date 13 Nov 2026 */}
+          {/* Scroll Word & Scroll Symbol in White below Date 13 Nov 2026 - Enhanced Size */}
           <div
             className="hero-scroll-white-indicator"
             onClick={() => {
@@ -730,45 +713,45 @@ export default function WeddingInvitation() {
             <span className="hero-scroll-word-white">SCROLL</span>
             <svg
               className="hero-mouse-svg-white"
-              width="13"
-              height="20"
-              viewBox="0 0 14 22"
+              width="16"
+              height="25"
+              viewBox="0 0 16 25"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <rect
-                x="1"
-                y="1"
-                width="12"
-                height="20"
-                rx="6"
+                x="1.2"
+                y="1.2"
+                width="13.6"
+                height="22.6"
+                rx="6.8"
                 stroke="#ffffff"
-                strokeWidth="1.6"
-                fill="rgba(255, 255, 255, 0.15)"
+                strokeWidth="1.8"
+                fill="rgba(255, 255, 255, 0.18)"
               />
               <line
                 className="hero-mouse-wheel-white"
-                x1="7"
-                y1="5"
-                x2="7"
-                y2="8"
+                x1="8"
+                y1="5.5"
+                x2="8"
+                y2="9.5"
                 stroke="#ffffff"
-                strokeWidth="1.6"
+                strokeWidth="2"
                 strokeLinecap="round"
               />
             </svg>
             <svg
               className="hero-chevron-svg-white"
-              width="9"
-              height="5"
-              viewBox="0 0 9 5"
+              width="11"
+              height="6"
+              viewBox="0 0 11 6"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M1 1L4.5 4L8 1"
+                d="M1 1L5.5 5L10 1"
                 stroke="#ffffff"
-                strokeWidth="1.6"
+                strokeWidth="1.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
