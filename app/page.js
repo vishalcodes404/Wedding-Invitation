@@ -713,9 +713,9 @@ export default function WeddingInvitation() {
           </p>
           <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
 
-          {/* Scroll mention below the date 13 Nov 2026 - Elegant compact symbol */}
+          {/* Pure Scroll Symbol below the date 13 Nov 2026 */}
           <div
-            className="hero-date-scroll"
+            className="hero-scroll-symbol-btn"
             onClick={() => {
               const nextSec = document.querySelector('.couple-section');
               if (nextSec) {
@@ -727,12 +727,50 @@ export default function WeddingInvitation() {
             title="Scroll down"
             aria-label="Scroll down to invitation"
           >
-            <div className="hero-scroll-symbol">
-              <span className="hero-scroll-dot" />
-            </div>
-            <span className="hero-date-scroll-text">SCROLL</span>
-            <svg className="hero-date-scroll-arrow" viewBox="0 0 10 6" fill="none">
-              <path d="M1 1L5 5L9 1" stroke="#b8862b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              className="hero-mouse-svg"
+              width="14"
+              height="22"
+              viewBox="0 0 14 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="1"
+                y="1"
+                width="12"
+                height="20"
+                rx="6"
+                stroke="#b8862b"
+                strokeWidth="1.5"
+                fill="rgba(255, 255, 255, 0.2)"
+              />
+              <line
+                className="hero-mouse-wheel-line"
+                x1="7"
+                y1="5"
+                x2="7"
+                y2="8"
+                stroke="#b8862b"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <svg
+              className="hero-chevron-svg"
+              width="8"
+              height="5"
+              viewBox="0 0 8 5"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 1L4 4L7 1"
+                stroke="#b8862b"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </div>
         </div>
