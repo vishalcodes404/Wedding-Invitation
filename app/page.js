@@ -652,14 +652,9 @@ export default function WeddingInvitation() {
           className={`temple-intro-overlay ${introOpened ? 'intro-gate-opened' : ''}`}
           onClick={handleOpenIntroGate}
         >
-          {/* Palace Stage Viewport with 3D Zoom & Perspective */}
+          {/* Palace Stage Viewport (No zoom, pure door opening) */}
           <div className="temple-entrance-stage palace-entrance-stage">
-            {/* 1. Deepest Background: Glowing Sacred Palace Courtyard & Fountain */}
-            <div className="temple-sanctum-bg palace-sanctum-bg">
-              <div className="temple-sanctum-glow palace-sanctum-glow"></div>
-            </div>
-
-            {/* 2. Authentic Royal Palace Double Doors (3D Swing Open) */}
+            {/* Authentic Royal Palace Double Doors (3D Swing Open directly to main page) */}
             <div className="temple-doors-container palace-doors-container">
               {/* Left Palace Door Leaf */}
               <div className="wooden-door-leaf wooden-door-left palace-door-left"></div>
@@ -668,7 +663,7 @@ export default function WeddingInvitation() {
               <div className="wooden-door-leaf wooden-door-right palace-door-right"></div>
             </div>
 
-            {/* 3. Center Medallion Subtle Breathing Glow */}
+            {/* Center Medallion Subtle Breathing Glow */}
             <div className="palace-medallion-pulse"></div>
           </div>
         </div>

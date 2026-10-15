@@ -68,7 +68,7 @@ body {
   opacity: 1;
   visibility: visible;
   height: auto;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.35s ease;
 }
 
 /* Typography Helpers */
@@ -1178,7 +1178,7 @@ body {
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0 0 70px rgba(0, 0, 0, 0.9);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+  transition: opacity 0.5s ease 1.1s, background-color 0.4s ease;
   touch-action: none;
   overscroll-behavior: none;
   user-select: none;
@@ -1186,11 +1186,13 @@ body {
 }
 
 .temple-intro-overlay.intro-gate-opened {
+  background: transparent !important;
+  box-shadow: none !important;
   opacity: 0;
   pointer-events: none;
 }
 
-/* Master Temple Stage (Preserves 768:1376 Aspect Ratio on all devices) */
+/* Master Palace Stage (No zoom, pure door opening) */
 .temple-entrance-stage,
 .palace-entrance-stage {
   position: relative;
@@ -1202,37 +1204,23 @@ body {
   margin: 0 auto;
   overflow: hidden;
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
-  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transform-origin: 50% 55%;
+  transition: box-shadow 0.4s ease;
 }
 
-/* Zooming inside through the opened palace doors directly to the main page */
+/* NO ZOOM: Stage stays perfectly in place while only doors open */
 .temple-intro-overlay.intro-gate-opened .temple-entrance-stage,
 .temple-intro-overlay.intro-gate-opened .palace-entrance-stage {
-  transform: scale(1.6) translateY(3%);
+  transform: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
 }
 
-/* 1. Deepest Layer: Royal Palace Courtyard & Fountain (Pure warm glow) */
+/* 1. Behind the doors: NO blocking background, revealing our main web page directly */
 .temple-sanctum-bg,
-.palace-sanctum-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('/images/palace_courtyard_bg.webp') center center / cover no-repeat;
-  z-index: 1;
-  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-}
-
+.palace-sanctum-bg,
 .temple-sanctum-glow,
 .palace-sanctum-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 230, 180, 0.45) 45%, rgba(212, 175, 55, 0.25) 75%, transparent 100%);
-  mix-blend-mode: screen;
-  pointer-events: none;
+  display: none !important;
 }
 
 /* 2. Authentic Royal Palace Glass & Brass Double Doors (3D Swing Open) */
@@ -1304,6 +1292,12 @@ body {
   pointer-events: none;
   animation: pulsePalaceGlow 2.4s infinite ease-in-out;
   z-index: 4;
+  transition: opacity 0.25s ease;
+}
+
+.temple-intro-overlay.intro-gate-opened .palace-medallion-pulse {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 @keyframes pulsePalaceGlow {
