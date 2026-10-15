@@ -726,6 +726,25 @@ export default function WeddingInvitation() {
             draggable={false}
           />
         </div>
+
+        {/* Scroll Indicator at Marked Carpet Place */}
+        <div
+          className="hero-scroll-indicator"
+          onClick={() => {
+            const nextSec = document.querySelector('.couple-section');
+            if (nextSec) {
+              nextSec.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          title="Scroll down to meet the couple"
+        >
+          <span className="hero-scroll-text">SCROLL</span>
+          <svg className="hero-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M7 10l5 5 5-5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
       </section>
 
       {/* =========================================================
