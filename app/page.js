@@ -713,9 +713,9 @@ export default function WeddingInvitation() {
           </p>
           <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
 
-          {/* Pure Scroll Symbol below the date 13 Nov 2026 */}
+          {/* Scroll Word & Scroll Symbol in White below Date 13 Nov 2026 */}
           <div
-            className="hero-scroll-symbol-btn"
+            className="hero-scroll-white-indicator"
             onClick={() => {
               const nextSec = document.querySelector('.couple-section');
               if (nextSec) {
@@ -727,10 +727,11 @@ export default function WeddingInvitation() {
             title="Scroll down"
             aria-label="Scroll down to invitation"
           >
+            <span className="hero-scroll-word-white">SCROLL</span>
             <svg
-              className="hero-mouse-svg"
-              width="14"
-              height="22"
+              className="hero-mouse-svg-white"
+              width="13"
+              height="20"
               viewBox="0 0 14 22"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -741,33 +742,33 @@ export default function WeddingInvitation() {
                 width="12"
                 height="20"
                 rx="6"
-                stroke="#b8862b"
-                strokeWidth="1.5"
-                fill="rgba(255, 255, 255, 0.2)"
+                stroke="#ffffff"
+                strokeWidth="1.6"
+                fill="rgba(255, 255, 255, 0.15)"
               />
               <line
-                className="hero-mouse-wheel-line"
+                className="hero-mouse-wheel-white"
                 x1="7"
                 y1="5"
                 x2="7"
                 y2="8"
-                stroke="#b8862b"
-                strokeWidth="1.5"
+                stroke="#ffffff"
+                strokeWidth="1.6"
                 strokeLinecap="round"
               />
             </svg>
             <svg
-              className="hero-chevron-svg"
-              width="8"
+              className="hero-chevron-svg-white"
+              width="9"
               height="5"
-              viewBox="0 0 8 5"
+              viewBox="0 0 9 5"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M1 1L4 4L7 1"
-                stroke="#b8862b"
-                strokeWidth="1.4"
+                d="M1 1L4.5 4L8 1"
+                stroke="#ffffff"
+                strokeWidth="1.6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
