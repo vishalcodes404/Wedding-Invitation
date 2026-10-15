@@ -381,7 +381,7 @@ function MovableHangingDiyas() {
       title="Touch, drag or tap to swing hanging diyas"
     >
       <img
-        src="/images/hanging_diyas_transparent.png"
+        src="/images/hanging_diyas_transparent.webp"
         alt="Traditional Hanging Diyas & Sacred Lotus"
         className="movable-diyas-img"
         draggable={false}
@@ -418,7 +418,7 @@ function MovableThankYouGarland() {
       title="Touch, drag or tap to swing overhead floral garland"
     >
       <img
-        src="/images/thankyou_garland_transparent.png"
+        src="/images/thankyou_garland_transparent.webp"
         alt="Marigold & Glass Bauble Garlands"
         className="movable-garland-img"
         draggable={false}
@@ -455,7 +455,7 @@ function MovableMarigoldBells() {
       title="Touch, drag or tap to swing marigold garland with bells"
     >
       <img
-        src="/images/marigold_bells_transparent.png"
+        src="/images/marigold_bells_transparent.webp"
         alt="Traditional Marigold Garland & Bells"
         className="movable-marigold-bells-img"
         draggable={false}
@@ -686,7 +686,7 @@ export default function WeddingInvitation() {
         {/* Sacred Couple Standing at Mandapam Center Stage */}
         <div className="hero-couple-stage">
           <img
-            src="/images/couple_full.png"
+            src="/images/couple_full.webp"
             alt="Sunil Kumar & Santhiya"
             className="hero-couple-img"
             loading="eager"
@@ -731,7 +731,7 @@ export default function WeddingInvitation() {
 
           {/* Right Side: Traditional Cartoon Groom Illustration */}
           <img
-            src="/images/cartoon_groom_clean.png"
+            src="/images/cartoon_groom_clean.webp"
             alt="Traditional South Indian Groom"
             className="card-cartoon-character groom-char"
             loading="eager"
@@ -756,7 +756,7 @@ export default function WeddingInvitation() {
 
           {/* Left Side: Traditional Cartoon Bride Illustration in Saree */}
           <img
-            src="/images/cartoon_bride_clean.png"
+            src="/images/cartoon_bride_clean.webp"
             alt="Traditional South Indian Bride in Saree"
             className="card-cartoon-character bride-char"
             loading="eager"
@@ -858,7 +858,7 @@ export default function WeddingInvitation() {
         <div className="event-card">
           {/* Top Left Corner Peacock Feather (Facing Down-to-Up) */}
           <img
-            src="/images/peacock_feather_transparent.png"
+            src="/images/peacock_feather_transparent.webp"
             alt=""
             className="event-corner-peacock"
             aria-hidden="true"
@@ -914,7 +914,7 @@ export default function WeddingInvitation() {
         <div className="event-card">
           {/* Top Left Corner Peacock Feather (Facing Down-to-Up) */}
           <img
-            src="/images/peacock_feather_transparent.png"
+            src="/images/peacock_feather_transparent.webp"
             alt=""
             className="event-corner-peacock"
             aria-hidden="true"
@@ -1027,7 +1027,7 @@ export default function WeddingInvitation() {
         {/* Traditional Royal Musicians Miniature Painting Footer (Image 2) */}
         <div className="musicians-footer-section">
           <img
-            src="/images/musicians_footer.jpg"
+            src="/images/musicians_footer.webp"
             alt="Royal Wedding Musicians Procession"
             className="musicians-footer-illustration"
             loading="lazy"

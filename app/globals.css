@@ -92,7 +92,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-image: url('/images/hero_mandap.jpg');
+  background-image: url('/images/hero_mandap.webp');
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -1091,7 +1091,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/images/hero_mandap.jpg');
+  background-image: url('/images/hero_mandap.webp');
   background-size: cover;
   background-position: center bottom;
   opacity: 0.55;
@@ -1128,7 +1128,7 @@ body {
 }
 
 .wooden-door-left {
-  background-image: url('/images/temple_door_left.jpg');
+  background-image: url('/images/temple_door_left.webp');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   transform-origin: 0% 50%;
@@ -1136,7 +1136,7 @@ body {
 }
 
 .wooden-door-right {
-  background-image: url('/images/temple_door_right.jpg');
+  background-image: url('/images/temple_door_right.webp');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   transform-origin: 100% 50%;
@@ -1158,7 +1158,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/images/temple_frame_cutout.png');
+  background-image: url('/images/temple_frame_cutout.webp');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: 3;
@@ -1336,16 +1336,10 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* Fade in scroll observer */
+/* All sections visible immediately with zero blank screen lag */
 .fade-in-section {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.fade-in-section.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* =========================================================
@@ -1378,15 +1372,6 @@ a,
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
-}
-
-/* Off-screen Content Visibility optimization: skips layout/render passes until scrolled */
-.events-section,
-.venue-section,
-.rsvp-section,
-.thankyou-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 550px;
 }
 
 /* Crisp image rendering across retina and standard displays */
