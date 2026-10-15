@@ -560,6 +560,22 @@ export default function WeddingInvitation() {
     }
   }, []);
 
+  // Lock page scrolling completely while door intro is active
+  useEffect(() => {
+    if (!introDismissed) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [introDismissed]);
+
   // Main Temple Gate Intro Click Handler:
   // Opens the temple doors with 3D animation, plays wedding song from 0.00, triggers 5s flower shower with fade, and transitions directly to main page
   const handleOpenIntroGate = () => {
@@ -616,7 +632,7 @@ export default function WeddingInvitation() {
   };
 
   return (
-    <main className="invitation-container">
+    <main className={`invitation-container ${!introDismissed ? 'door-active' : ''}`}>
       {/* =========================================================
           INTRO SCREEN: AUTHENTIC WOODEN TEMPLE DOOR (GOPURAM SANCTUM)
           ========================================================= */}
@@ -665,9 +681,13 @@ export default function WeddingInvitation() {
       )}
 
       {/* =========================================================
-          1. HERO SECTION
+          MAIN PAGE CONTENT: COMPLETELY HIDDEN ON DOOR PAGE (ZERO BLEED)
           ========================================================= */}
-      <section className="hero-section">
+      <div className={`main-invitation-content ${!introOpened ? 'is-hidden-behind-door' : 'is-revealed'}`}>
+        {/* =========================================================
+            1. HERO SECTION
+            ========================================================= */}
+        <section className="hero-section">
         <div className="hero-content">
           <p className="font-caps-sub" style={{ color: '#8c631d' }}>THE WEDDING OF</p>
           <h1 className="hero-names font-serif-title">
@@ -1036,6 +1056,7 @@ export default function WeddingInvitation() {
           />
         </div>
       </section>
+      </div>
 
       {/* =========================================================
           6. FLOATING ACTIONS (Flower Petal Shower & Music Player)
@@ -1044,23 +1065,27 @@ export default function WeddingInvitation() {
       <FlowerShower active={flowersFlowing} fading={flowersFading} />
 
       {/* Floating Flower Shower Toggle Button (Flowers flow for 5 seconds on tap) */}
-      <button
-        onClick={handleTriggerFlowerShower}
-        className={`floating-action floating-flower-btn ${flowersFlowing ? 'active' : ''}`}
-        title="Shower Flower Petals (5 sec)"
-        aria-label="Shower Flower Petals"
-      >
-        <span>🌸</span>
-      </button>
+      {introOpened && (
+        <button
+          onClick={handleTriggerFlowerShower}
+          className={`floating-action floating-flower-btn ${flowersFlowing ? 'active' : ''}`}
+          title="Shower Flower Petals (5 sec)"
+          aria-label="Shower Flower Petals"
+        >
+          <span>🌸</span>
+        </button>
+      )}
 
       {/* Floating Music Toggle Button */}
-      <button
-        onClick={toggleMusic}
-        className={`floating-action floating-music-btn ${isPlaying ? 'playing' : ''}`}
-        aria-label="Toggle wedding music"
-      >
-        {isPlaying ? '♪' : '♫'}
-      </button>
+      {introOpened && (
+        <button
+          onClick={toggleMusic}
+          className={`floating-action floating-music-btn ${isPlaying ? 'playing' : ''}`}
+          aria-label="Toggle wedding music"
+        >
+          {isPlaying ? '♪' : '♫'}
+        </button>
+      )}
 
       {/* Background Wedding Song Audio */}
       <audio
