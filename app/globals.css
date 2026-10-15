@@ -247,10 +247,10 @@ body {
 
 @keyframes ambientMarigoldSway {
   0% {
-    transform: rotate(-2.2deg);
+    transform: rotate(-1.2deg);
   }
   100% {
-    transform: rotate(2.2deg);
+    transform: rotate(1.2deg);
   }
 }
 
@@ -679,10 +679,10 @@ body {
 
 @keyframes ambientDiyasSway {
   0% {
-    transform: rotate(-2.4deg);
+    transform: rotate(-1.2deg);
   }
   100% {
-    transform: rotate(2.4deg);
+    transform: rotate(1.2deg);
   }
 }
 
@@ -727,10 +727,10 @@ body {
 
 @keyframes ambientGarlandSway {
   0% {
-    transform: rotate(-2deg);
+    transform: rotate(-1.0deg);
   }
   100% {
-    transform: rotate(2deg);
+    transform: rotate(1.0deg);
   }
 }
 
@@ -1367,12 +1367,16 @@ button,
 a,
 .floating-action,
 .temple-center-medallion,
-.gates-ring-btn,
+.gates-ring-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Movable floral banners: strictly prevent touch scrolling so finger dragging moves smoothly */
 .movable-diyas-banner-wrap,
 .movable-marigold-bells-wrap,
 .movable-garland-wrap {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  touch-action: none !important;
 }
 
 /* GPU Hardware Acceleration for 3D and floating animations */

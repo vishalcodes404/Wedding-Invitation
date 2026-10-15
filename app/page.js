@@ -242,9 +242,9 @@ function FlowerShower({ active, fading = false }) {
 }
 
 // =========================================================
-// REUSABLE PENDULUM SWING PHYSICS HOOK
+// REUSABLE PENDULUM SWING PHYSICS HOOK (Subtle, Graceful Movement)
 // =========================================================
-function usePendulumSwing({ maxAngle = 22, impulse = 8.5, sensitivity = 0.16 } = {}) {
+function usePendulumSwing({ maxAngle = 5, impulse = 2.4, sensitivity = 0.06 } = {}) {
   const [angle, setAngle] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isPhysicsActive, setIsPhysicsActive] = useState(false);
@@ -261,20 +261,26 @@ function usePendulumSwing({ maxAngle = 22, impulse = 8.5, sensitivity = 0.16 } =
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
-      // Realistic pendulum restoring torque: -k * angle - damping * velocity
-      const restoring = -24.0 * physicsRef.current.angle;
-      const damping = -2.2 * physicsRef.current.velocity;
+      // Realistic gentle pendulum restoring torque with smooth natural settling
+      const restoring = -28.0 * physicsRef.current.angle;
+      const damping = -3.4 * physicsRef.current.velocity;
       const accel = restoring + damping;
 
       physicsRef.current.velocity += accel * dt;
       physicsRef.current.angle += physicsRef.current.velocity * dt;
 
+      // Gentle bounds clamping during oscillation
+      if (Math.abs(physicsRef.current.angle) > maxAngle * 1.15) {
+        physicsRef.current.angle = Math.sign(physicsRef.current.angle) * maxAngle * 1.15;
+        physicsRef.current.velocity *= -0.5;
+      }
+
       setAngle(physicsRef.current.angle);
 
       // Settle condition
       if (
-        Math.abs(physicsRef.current.angle) < 0.15 &&
-        Math.abs(physicsRef.current.velocity) < 0.25
+        Math.abs(physicsRef.current.angle) < 0.08 &&
+        Math.abs(physicsRef.current.velocity) < 0.15
       ) {
         setAngle(0);
         setIsPhysicsActive(false);
@@ -287,7 +293,9 @@ function usePendulumSwing({ maxAngle = 22, impulse = 8.5, sensitivity = 0.16 } =
   };
 
   const handlePointerDown = (e) => {
-    e.currentTarget.setPointerCapture(e.pointerId);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (err) {}
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     setIsPhysicsActive(false);
     setIsDragging(true);
@@ -317,21 +325,21 @@ function usePendulumSwing({ maxAngle = 22, impulse = 8.5, sensitivity = 0.16 } =
 
     const dx = e.clientX - dragStartRef.current.x;
     const elapsed = Math.max(performance.now() - dragStartRef.current.time, 16);
-    const speed = (dx / elapsed) * 16; // flick momentum
+    const speed = Math.max(-6, Math.min(6, (dx / elapsed) * 6)); // gentle flick momentum
 
     if (Math.abs(dx) < 6) {
-      // Tap or click impulse!
-      const kick = (Math.random() > 0.5 ? 1 : -1) * (impulse + Math.random() * 4);
+      // Tap or touch impulse
+      const kick = (Math.random() > 0.5 ? 1 : -1) * (impulse + Math.random() * 0.6);
       runPhysics(0, kick);
     } else {
-      // Release from drag with flick momentum
+      // Release from drag with gentle momentum
       runPhysics(angle, speed);
     }
   };
 
   const handleMouseEnter = () => {
     if (!isDragging && !isPhysicsActive) {
-      const nudge = (Math.random() > 0.5 ? 1 : -1) * (impulse * 0.45);
+      const nudge = (Math.random() > 0.5 ? 1 : -1) * (impulse * 0.4);
       runPhysics(0, nudge);
     }
   };
@@ -363,13 +371,14 @@ function MovableHangingDiyas() {
     handlePointerMove,
     handlePointerUp,
     handleMouseEnter,
-  } = usePendulumSwing({ maxAngle: 22, impulse: 9, sensitivity: 0.18 });
+  } = usePendulumSwing({ maxAngle: 5, impulse: 2.5, sensitivity: 0.06 });
 
   return (
     <div
       className={`movable-diyas-banner-wrap ${isDragging || isPhysicsActive ? 'is-interacting' : 'is-ambient'}`}
       style={{
         transform: isDragging || isPhysicsActive ? `rotate(${angle}deg)` : undefined,
+        touchAction: 'none',
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -378,7 +387,7 @@ function MovableHangingDiyas() {
       onMouseEnter={handleMouseEnter}
       role="button"
       tabIndex={0}
-      title="Touch, drag or tap to swing hanging diyas"
+      title="Touch or drag to gently sway hanging diyas"
     >
       <img
         src="/images/hanging_diyas_transparent.webp"
@@ -400,13 +409,14 @@ function MovableThankYouGarland() {
     handlePointerMove,
     handlePointerUp,
     handleMouseEnter,
-  } = usePendulumSwing({ maxAngle: 18, impulse: 7.5, sensitivity: 0.14 });
+  } = usePendulumSwing({ maxAngle: 4.5, impulse: 2.2, sensitivity: 0.05 });
 
   return (
     <div
       className={`movable-garland-wrap ${isDragging || isPhysicsActive ? 'is-interacting' : 'is-ambient'}`}
       style={{
         transform: isDragging || isPhysicsActive ? `rotate(${angle}deg)` : undefined,
+        touchAction: 'none',
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -415,7 +425,7 @@ function MovableThankYouGarland() {
       onMouseEnter={handleMouseEnter}
       role="button"
       tabIndex={0}
-      title="Touch, drag or tap to swing overhead floral garland"
+      title="Touch or drag to gently sway overhead floral garland"
     >
       <img
         src="/images/thankyou_garland_transparent.webp"
@@ -437,13 +447,14 @@ function MovableMarigoldBells() {
     handlePointerMove,
     handlePointerUp,
     handleMouseEnter,
-  } = usePendulumSwing({ maxAngle: 20, impulse: 8.5, sensitivity: 0.16 });
+  } = usePendulumSwing({ maxAngle: 5, impulse: 2.5, sensitivity: 0.06 });
 
   return (
     <div
       className={`movable-marigold-bells-wrap ${isDragging || isPhysicsActive ? 'is-interacting' : 'is-ambient'}`}
       style={{
         transform: isDragging || isPhysicsActive ? `rotate(${angle}deg)` : undefined,
+        touchAction: 'none',
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -452,7 +463,7 @@ function MovableMarigoldBells() {
       onMouseEnter={handleMouseEnter}
       role="button"
       tabIndex={0}
-      title="Touch, drag or tap to swing marigold garland with bells"
+      title="Touch or drag to gently sway marigold garland with bells"
     >
       <img
         src="/images/marigold_bells_transparent.webp"
