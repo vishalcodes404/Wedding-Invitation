@@ -207,84 +207,65 @@ body {
   100% { transform: translateY(-4px); }
 }
 
-/* Minimalist Luxury Scroll Symbol at Marked Carpet Place (Tiny & Dainty) */
-.hero-scroll-symbol {
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  display: flex;
+/* Scroll Mention Below Date 13 Nov 2026 */
+.hero-date-scroll {
+  margin: 8px auto 0;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   cursor: pointer;
-  background: transparent;
-  padding: 2px 6px;
+  padding: 4px 14px 5px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(184, 134, 43, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12), inset 0 0 6px rgba(255, 255, 255, 0.7);
+  animation: heroDateScrollBob 2s infinite ease-in-out;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.hero-scroll-symbol:active {
-  transform: translateX(-50%) scale(0.92);
+.hero-date-scroll:hover {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: #b8862b;
+  transform: translateY(2px);
 }
 
-/* Delicate 13px x 21px golden mouse scroll capsule */
-.scroll-symbol-capsule {
-  width: 13px;
-  height: 21px;
-  border: 1.5px solid #d4af37;
-  border-radius: 9px;
-  background: rgba(40, 15, 10, 0.35);
-  display: flex;
-  justify-content: center;
-  padding-top: 3px;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+.hero-date-scroll:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.9);
 }
 
-/* Tiny golden rolling dot animation */
-.scroll-symbol-dot {
-  width: 2.5px;
-  height: 4.5px;
-  background: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 0 3px #f7e199;
-  animation: scrollDotSlide 1.8s infinite ease-in-out;
+.hero-date-scroll-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #64151b;
+  padding-left: 0.26em;
+  line-height: 1;
 }
 
-@keyframes scrollDotSlide {
-  0% {
-    opacity: 0;
+.hero-date-scroll-arrow {
+  width: 12px;
+  height: 12px;
+  stroke: #b8862b;
+  display: block;
+}
+
+@keyframes heroDateScrollBob {
+  0%, 100% {
     transform: translateY(0);
   }
-  30% {
-    opacity: 1;
+  50% {
+    transform: translateY(4px);
   }
-  80% {
-    opacity: 1;
-    transform: translateY(7px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(9px);
-  }
-}
-
-/* Small, delicate "scroll" label */
-.hero-scroll-mini-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #fff8e8;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 6px rgba(212, 175, 55, 0.6);
-  padding-left: 0.22em;
-  line-height: 1;
 }
 
 /* =========================================================

@@ -712,6 +712,25 @@ export default function WeddingInvitation() {
             KERALAM
           </p>
           <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
+
+          {/* Scroll mention below the date 13 Nov 2026 */}
+          <div
+            className="hero-date-scroll"
+            onClick={() => {
+              const nextSec = document.querySelector('.couple-section');
+              if (nextSec) {
+                nextSec.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            title="Scroll down"
+          >
+            <span className="hero-date-scroll-text">SCROLL</span>
+            <svg className="hero-date-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M7 10l5 5 5-5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
         </div>
 
         {/* Sacred Couple Standing at Mandapam Center Stage */}
@@ -725,25 +744,6 @@ export default function WeddingInvitation() {
             decoding="async"
             draggable={false}
           />
-        </div>
-
-        {/* Minimalist Scroll Symbol at Marked Carpet Place */}
-        <div
-          className="hero-scroll-symbol"
-          onClick={() => {
-            const nextSec = document.querySelector('.couple-section');
-            if (nextSec) {
-              nextSec.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          title="Scroll down"
-        >
-          <div className="scroll-symbol-capsule">
-            <span className="scroll-symbol-dot"></span>
-          </div>
-          <span className="hero-scroll-mini-text">scroll</span>
         </div>
       </section>
 
