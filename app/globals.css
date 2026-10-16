@@ -1165,6 +1165,10 @@ body {
 /* =========================================================
    6. AUTHENTIC WOODEN TEMPLE DOOR INTRO (GOPURAM SANCTUM)
    ========================================================= */
+/* =========================================================
+   INTRO SCREEN: LUXURY BOTANICAL ENVELOPE (GOLDEN WAX SEAL)
+   ========================================================= */
+.temple-intro-overlay.envelope-intro-overlay,
 .temple-intro-overlay {
   position: fixed;
   inset: 0;
@@ -1177,7 +1181,7 @@ body {
   justify-content: center;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 0 70px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
   transition: opacity 0.5s ease 1.1s, background-color 0.4s ease;
   touch-action: none;
   overscroll-behavior: none;
@@ -1185,6 +1189,7 @@ body {
   -webkit-user-select: none;
 }
 
+.temple-intro-overlay.envelope-opened,
 .temple-intro-overlay.intro-gate-opened {
   background: transparent !important;
   box-shadow: none !important;
@@ -1192,7 +1197,8 @@ body {
   pointer-events: none;
 }
 
-/* Master Palace Stage (No zoom, pure door opening) */
+/* Master Envelope Stage (Maintains 426:918 Aspect Ratio on All Screens) */
+.envelope-stage,
 .temple-entrance-stage,
 .palace-entrance-stage {
   position: relative;
@@ -1200,121 +1206,110 @@ body {
   max-width: 440px;
   height: 100%;
   max-height: 100vh;
-  aspect-ratio: 427 / 1024;
+  aspect-ratio: 426 / 918;
   margin: 0 auto;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+  overflow: visible;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.8);
   transition: box-shadow 0.4s ease;
 }
 
-/* NO ZOOM: Stage stays perfectly in place while only doors open */
-.temple-intro-overlay.intro-gate-opened .temple-entrance-stage,
-.temple-intro-overlay.intro-gate-opened .palace-entrance-stage {
-  transform: none !important;
+.temple-intro-overlay.envelope-opened .envelope-stage,
+.temple-intro-overlay.intro-gate-opened .temple-entrance-stage {
   box-shadow: none !important;
-  overflow: visible !important;
+  transform: none !important;
 }
 
-/* 1. Behind the doors: NO blocking background, revealing our main web page directly */
-.temple-sanctum-bg,
-.palace-sanctum-bg,
-.temple-sanctum-glow,
-.palace-sanctum-glow {
-  display: none !important;
+/* 1. Bottom Envelope Body (Inner pocket + Embossed Botanical Vines & Monogram) */
+.envelope-bottom-body {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.7s ease 0.4s;
 }
 
-/* 2. Authentic Royal Palace Glass & Brass Double Doors (3D Swing Open) */
-.temple-doors-container,
-.palace-doors-container {
+.envelope-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* When envelope opens, bottom body smoothly unfolds/slides down */
+.temple-intro-overlay.envelope-opened .envelope-bottom-body {
+  transform: translateY(90px) rotateX(-35deg) scale(0.96);
+  opacity: 0;
+}
+
+/* 2. Top Flap with Embossed Vines & 3D Golden Wax Seal */
+.envelope-top-flap-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  display: flex;
-  z-index: 2;
-  perspective: 1200px;
-}
-
-.wooden-door-leaf {
-  width: 50%;
-  height: 100%;
-  position: relative;
-  transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1);
+  height: 64.8%; /* down to flap apex & wax seal */
+  z-index: 3;
+  transform-origin: top center;
   transform-style: preserve-3d;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 1.25s cubic-bezier(0.22, 0.85, 0.25, 1);
+  filter: drop-shadow(0 14px 22px rgba(60, 45, 30, 0.32));
 }
 
-.wooden-door-left,
-.palace-door-left {
-  background-image: url('/images/palace_door_left.webp');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  transform-origin: 0% 50%;
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
+.envelope-top-flap-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.wooden-door-right,
-.palace-door-right {
-  background-image: url('/images/palace_door_right.webp');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  transform-origin: 100% 50%;
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
+/* The Cinematic Flap Lift: Rotates up in 3D through Image 2's exact angle to 135deg */
+.temple-intro-overlay.envelope-opened .envelope-top-flap-wrapper {
+  transform: rotateX(135deg) translateY(-20px);
+  filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.15));
 }
 
-/* 3D Realistic Royal Palace Door Swing Open */
-.temple-intro-overlay.intro-gate-opened .wooden-door-left,
-.temple-intro-overlay.intro-gate-opened .palace-door-left {
-  transform: perspective(1200px) rotateY(-112deg);
-}
-
-.temple-intro-overlay.intro-gate-opened .wooden-door-right,
-.temple-intro-overlay.intro-gate-opened .palace-door-right {
-  transform: perspective(1200px) rotateY(112deg);
-}
-
-/* 3. Old frame hidden - entire door is now the Royal Palace Gate */
-.temple-frame-foreground {
-  display: none !important;
-}
-
-/* 4. Center Medallion Breathing Glow */
-.palace-medallion-pulse {
+/* 3. Subtle Luxury Wax Seal Shimmer Glow */
+.envelope-seal-pulse {
   position: absolute;
-  top: 41%;
+  top: 55.6%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 130px;
-  height: 150px;
+  width: 170px;
+  height: 170px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(212, 175, 55, 0.25) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 230, 160, 0.4) 0%, rgba(212, 175, 55, 0.18) 45%, transparent 70%);
   pointer-events: none;
-  animation: pulsePalaceGlow 2.4s infinite ease-in-out;
+  animation: pulseSealGlow 2.6s infinite ease-in-out;
   z-index: 4;
   transition: opacity 0.25s ease;
 }
 
-.temple-intro-overlay.intro-gate-opened .palace-medallion-pulse {
+.temple-intro-overlay.envelope-opened .envelope-seal-pulse {
   opacity: 0 !important;
-  pointer-events: none;
 }
 
-@keyframes pulsePalaceGlow {
+@keyframes pulseSealGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.35));
     transform: translate(-50%, -50%) scale(0.96);
-    opacity: 0.7;
+    opacity: 0.65;
   }
   50% {
-    filter: drop-shadow(0 0 24px rgba(212, 175, 55, 0.85));
+    filter: drop-shadow(0 0 24px rgba(212, 175, 55, 0.8));
     transform: translate(-50%, -50%) scale(1.05);
-    opacity: 1;
+    opacity: 0.95;
   }
-}
-
-.temple-center-medallion {
-  display: none !important;
 }
 
 /* =========================================================

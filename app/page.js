@@ -645,26 +645,37 @@ export default function WeddingInvitation() {
   return (
     <main className={`invitation-container ${!introDismissed ? 'door-active' : ''}`}>
       {/* =========================================================
-          INTRO SCREEN: ROYAL PALACE GLASS & BRASS GATES (MUGHAL FLORAL ARCH)
+          INTRO SCREEN: LUXURY BOTANICAL ENVELOPE (GOLDEN WAX SEAL)
           ========================================================= */}
       {!introDismissed && (
         <div
-          className={`temple-intro-overlay ${introOpened ? 'intro-gate-opened' : ''}`}
+          className={`temple-intro-overlay envelope-intro-overlay ${introOpened ? 'intro-gate-opened envelope-opened' : ''}`}
           onClick={handleOpenIntroGate}
         >
-          {/* Palace Stage Viewport (No zoom, pure door opening) */}
-          <div className="temple-entrance-stage palace-entrance-stage">
-            {/* Authentic Royal Palace Double Doors (3D Swing Open directly to main page) */}
-            <div className="temple-doors-container palace-doors-container">
-              {/* Left Palace Door Leaf */}
-              <div className="wooden-door-leaf wooden-door-left palace-door-left"></div>
-
-              {/* Right Palace Door Leaf */}
-              <div className="wooden-door-leaf wooden-door-right palace-door-right"></div>
+          {/* Envelope Stage Container (3D Perspective) */}
+          <div className="envelope-stage">
+            {/* 1. Bottom Envelope Body with Embossed Botanical Branches & S & S Monogram */}
+            <div className="envelope-bottom-body">
+              <img
+                src="/images/envelope_bottom_body.webp"
+                alt="Luxury Envelope Body"
+                className="envelope-bg-img"
+                draggable={false}
+              />
             </div>
 
-            {/* Center Medallion Subtle Breathing Glow */}
-            <div className="palace-medallion-pulse"></div>
+            {/* 2. Top Flap with Embossed Vines & 3D Golden Wax Seal (Lifts Up in 3D) */}
+            <div className="envelope-top-flap-wrapper">
+              <img
+                src="/images/envelope_top_flap.webp"
+                alt="Envelope Flap with Golden Wax Seal"
+                className="envelope-top-flap-img"
+                draggable={false}
+              />
+            </div>
+
+            {/* 3. Subtle Luxury Wax Seal Shimmer Glow on Center Seal */}
+            <div className="envelope-seal-pulse"></div>
           </div>
         </div>
       )}
