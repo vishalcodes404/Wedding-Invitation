@@ -13,10 +13,8 @@ export default function RootLayout({ children }) {
         {/* High-Performance Font Preconnect */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Critical Asset Preloading for Instant Envelope & Mandapam Display */}
-        <link rel="preload" as="image" href="/images/envelope_closed_full.webp" fetchPriority="high" type="image/webp" />
-        <link rel="preload" as="image" href="/images/envelope_top_flap.webp" fetchPriority="high" type="image/webp" />
-        <link rel="preload" as="image" href="/images/envelope_bottom_body.webp" fetchPriority="high" type="image/webp" />
+        {/* Critical Asset Preloading for Instant Arch Doors & Mandapam Display */}
+        <link rel="preload" as="image" href="/images/arch_door_poster.webp" fetchPriority="high" type="image/webp" />
         <link rel="preload" as="image" href="/images/hero_mandap.webp" type="image/webp" />
         <link rel="preload" as="image" href="/images/couple_full.webp" type="image/webp" />
         <link rel="preload" as="image" href="/images/cartoon_groom_clean.webp" type="image/webp" />

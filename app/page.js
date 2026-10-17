@@ -295,7 +295,7 @@ function usePendulumSwing({ maxAngle = 5, impulse = 2.4, sensitivity = 0.06 } = 
   const handlePointerDown = (e) => {
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (err) {}
+    } catch (err) { }
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     setIsPhysicsActive(false);
     setIsDragging(true);
@@ -321,7 +321,7 @@ function usePendulumSwing({ maxAngle = 5, impulse = 2.4, sensitivity = 0.06 } = 
     setIsDragging(false);
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch (err) {}
+    } catch (err) { }
 
     const dx = e.clientX - dragStartRef.current.x;
     const elapsed = Math.max(performance.now() - dragStartRef.current.time, 16);
@@ -479,6 +479,30 @@ export default function WeddingInvitation() {
   // Gate intro states
   const [introOpened, setIntroOpened] = useState(false);
   const [introDismissed, setIntroDismissed] = useState(false);
+  const introVideoRef = useRef(null);
+  const [videoReadyToTap, setVideoReadyToTap] = useState(false);
+
+  // Auto-play the reference video smoothly on initial load
+  useEffect(() => {
+    if (introVideoRef.current && !introDismissed) {
+      introVideoRef.current.play().catch(() => {});
+    }
+  }, [introDismissed]);
+
+  const handleVideoTimeUpdate = () => {
+    const video = introVideoRef.current;
+    if (!video) return;
+
+    if (video.currentTime >= 4.8 && !videoReadyToTap) {
+      setVideoReadyToTap(true);
+    }
+
+    // Seamlessly loop the pulsing tap hand section (between 5.8s and 7.5s) until tapped
+    if (video.currentTime >= 7.5) {
+      video.currentTime = 5.8;
+      video.play().catch(() => {});
+    }
+  };
 
   // Flower Shower state (10-second duration with graceful fade)
   const [flowersFlowing, setFlowersFlowing] = useState(false);
@@ -588,7 +612,7 @@ export default function WeddingInvitation() {
   }, [introDismissed]);
 
   // Main Temple Gate Intro Click Handler:
-  // Opens the temple doors with 3D animation, plays wedding song from 0.00, triggers 5s flower shower with fade, and transitions directly to main page
+  // Plays wedding song from 0.00, triggers zoom into the main page, triggers flower shower, and dismisses overlay
   const handleOpenIntroGate = () => {
     if (introOpened) return;
 
@@ -601,16 +625,16 @@ export default function WeddingInvitation() {
         .catch((err) => console.log('Audio playback initialized:', err));
     }
 
-    // 2. Trigger the 3D door opening animation and camera zoom
+    // 2. Trigger delicate light fade directly to reveal the main page (no zoom)
     setIntroOpened(true);
 
-    // 3. Flower shower flows for 5 seconds as door opens and fades smoothly
+    // 3. Flower shower cascades as doors open
     triggerFlowerShower();
 
     // 4. Smoothly transition directly into the main page
     setTimeout(() => {
       setIntroDismissed(true);
-    }, 1200);
+    }, 800);
   };
 
   // Replay intro gates from main page
@@ -622,8 +646,13 @@ export default function WeddingInvitation() {
       setIsPlaying(false);
     }
     setIntroDismissed(false);
+    setVideoReadyToTap(false);
     setTimeout(() => {
       setIntroOpened(false);
+      if (introVideoRef.current) {
+        introVideoRef.current.currentTime = 0;
+        introVideoRef.current.play().catch(() => {});
+      }
     }, 50);
   };
 
@@ -645,37 +674,36 @@ export default function WeddingInvitation() {
   return (
     <main className={`invitation-container ${!introDismissed ? 'door-active' : ''}`}>
       {/* =========================================================
-          INTRO SCREEN: LUXURY BOTANICAL ENVELOPE (GOLDEN WAX SEAL)
+          INTRO SCREEN: REGAL FLORAL ARCH CURTAIN OPENING (REFERENCE VIDEO)
           ========================================================= */}
       {!introDismissed && (
         <div
-          className={`temple-intro-overlay envelope-intro-overlay ${introOpened ? 'intro-gate-opened envelope-opened' : ''}`}
+          className={`temple-intro-overlay arch-intro-overlay ${introOpened ? 'intro-gate-opened arch-opened' : ''}`}
           onClick={handleOpenIntroGate}
+          role="button"
+          tabIndex={0}
+          aria-label="Tap to open wedding invitation"
         >
-          {/* Envelope Stage Container (3D Perspective) */}
-          <div className="envelope-stage">
-            {/* 1. Bottom Envelope Body with Embossed Botanical Branches & S & S Monogram */}
-            <div className="envelope-bottom-body">
-              <img
-                src="/images/envelope_bottom_body.webp"
-                alt="Luxury Envelope Body"
-                className="envelope-bg-img"
-                draggable={false}
-              />
-            </div>
+          {/* Arch Stage Container (Preserves 720:1280 Aspect Ratio with Cinematic Zoom Transition) */}
+          <div className="arch-entrance-stage arch-video-stage">
+            <video
+              ref={introVideoRef}
+              className="arch-intro-video"
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              poster="/images/arch_door_poster.webp"
+              onTimeUpdate={handleVideoTimeUpdate}
+            >
+              <source src="/images/arch_door_intro.webm" type="video/webm" />
+              <source src="/images/arch_door_intro.mp4" type="video/mp4" />
+            </video>
 
-            {/* 2. Top Flap with Embossed Vines & 3D Golden Wax Seal (Lifts Up in 3D) */}
-            <div className="envelope-top-flap-wrapper">
-              <img
-                src="/images/envelope_top_flap.webp"
-                alt="Envelope Flap with Golden Wax Seal"
-                className="envelope-top-flap-img"
-                draggable={false}
-              />
+            {/* Small Elegant Tap Hint Text at Bottom */}
+            <div className={`arch-video-tap-hint ${videoReadyToTap ? 'is-visible' : ''}`}>
+              <span className="arch-tap-text-small">TAP ANYWHERE TO OPEN</span>
             </div>
-
-            {/* 3. Subtle Luxury Wax Seal Shimmer Glow on Center Seal */}
-            <div className="envelope-seal-pulse"></div>
           </div>
         </div>
       )}
@@ -688,436 +716,436 @@ export default function WeddingInvitation() {
             1. HERO SECTION
             ========================================================= */}
         <section className="hero-section">
-        <div className="hero-content">
-          <p className="font-caps-sub" style={{ color: '#8c631d' }}>THE WEDDING OF</p>
-          <h1 className="hero-names font-serif-title">
-            Sunil Kumar
-            <span className="hero-ampersand">&amp;</span>
-            Santhiya
-          </h1>
-          <p className="hero-venue">
-            GURUVAYUR SRI KRISHNA TEMPLE
-            <br />
-            KERALAM
-          </p>
-          <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
+          <div className="hero-content">
+            <p className="font-caps-sub" style={{ color: '#8c631d' }}>THE WEDDING OF</p>
+            <h1 className="hero-names font-serif-title">
+              Sunil Kumar
+              <span className="hero-ampersand">&amp;</span>
+              Santhiya
+            </h1>
+            <p className="hero-venue">
+              GURUVAYUR SRI KRISHNA TEMPLE
+              <br />
+              KERALAM
+            </p>
+            <p className="hero-date">FRIDAY, 13 NOVEMBER 2026</p>
 
-          {/* Scroll Word & Scroll Symbol in White below Date 13 Nov 2026 - Enhanced Size */}
-          <div
-            className="hero-scroll-white-indicator"
-            onClick={() => {
-              const nextSec = document.querySelector('.couple-section');
-              if (nextSec) {
-                nextSec.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            role="button"
-            tabIndex={0}
-            title="Scroll down"
-            aria-label="Scroll down to invitation"
-          >
-            <span className="hero-scroll-word-white">SCROLL</span>
-            <svg
-              className="hero-mouse-svg-white"
-              width="16"
-              height="25"
-              viewBox="0 0 16 25"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            {/* Scroll Word & Scroll Symbol in White below Date 13 Nov 2026 - Enhanced Size */}
+            <div
+              className="hero-scroll-white-indicator"
+              onClick={() => {
+                const nextSec = document.querySelector('.couple-section');
+                if (nextSec) {
+                  nextSec.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              title="Scroll down"
+              aria-label="Scroll down to invitation"
             >
-              <rect
-                x="1.2"
-                y="1.2"
-                width="13.6"
-                height="22.6"
-                rx="6.8"
-                stroke="#ffffff"
-                strokeWidth="1.8"
-                fill="rgba(255, 255, 255, 0.18)"
-              />
-              <line
-                className="hero-mouse-wheel-white"
-                x1="8"
-                y1="5.5"
-                x2="8"
-                y2="9.5"
-                stroke="#ffffff"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <svg
-              className="hero-chevron-svg-white"
-              width="11"
-              height="6"
-              viewBox="0 0 11 6"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 1L5.5 5L10 1"
-                stroke="#ffffff"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+              <span className="hero-scroll-word-white">SCROLL</span>
+              <svg
+                className="hero-mouse-svg-white"
+                width="16"
+                height="25"
+                viewBox="0 0 16 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="1.2"
+                  y="1.2"
+                  width="13.6"
+                  height="22.6"
+                  rx="6.8"
+                  stroke="#ffffff"
+                  strokeWidth="1.8"
+                  fill="rgba(255, 255, 255, 0.18)"
+                />
+                <line
+                  className="hero-mouse-wheel-white"
+                  x1="8"
+                  y1="5.5"
+                  x2="8"
+                  y2="9.5"
+                  stroke="#ffffff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <svg
+                className="hero-chevron-svg-white"
+                width="11"
+                height="6"
+                viewBox="0 0 11 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L5.5 5L10 1"
+                  stroke="#ffffff"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
 
-        {/* Sacred Couple Standing at Mandapam Center Stage */}
-        <div className="hero-couple-stage">
-          <img
-            src="/images/couple_full.webp"
-            alt="Sunil Kumar & Santhiya"
-            className="hero-couple-img"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            draggable={false}
-          />
-        </div>
-      </section>
+          {/* Sacred Couple Standing at Mandapam Center Stage */}
+          <div className="hero-couple-stage">
+            <img
+              src="/images/couple_full.webp"
+              alt="Sunil Kumar & Santhiya"
+              className="hero-couple-img"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              draggable={false}
+            />
+          </div>
+        </section>
 
-      {/* =========================================================
+        {/* =========================================================
           2. MEET THE COUPLE SECTION
           ========================================================= */}
-      <section className="section couple-section fade-in-section">
-        {/* Overhead Hanging Marigold Garland & Temple Bells (No Background, Movable) */}
-        <MovableMarigoldBells />
+        <section className="section couple-section fade-in-section">
+          {/* Overhead Hanging Marigold Garland & Temple Bells (No Background, Movable) */}
+          <MovableMarigoldBells />
 
-        <p className="font-caps-sub">BEGINNING OF FOREVER</p>
-        <h2 className="section-title font-serif-title">Meet the Couple</h2>
-        <div className="gold-accent-line"></div>
+          <p className="font-caps-sub">BEGINNING OF FOREVER</p>
+          <h2 className="section-title font-serif-title">Meet the Couple</h2>
+          <div className="gold-accent-line"></div>
 
-        {/* Groom Card: Details on Left, Groom on Right */}
-        <div className="couple-card groom groom-layout">
-          <svg className="mandala-watermark" viewBox="0 0 100 100" fill="none" stroke="#d4af37" strokeWidth="0.8">
-            <circle cx="50" cy="50" r="45" />
-            <circle cx="50" cy="50" r="30" strokeDasharray="3 3" />
-            <circle cx="50" cy="50" r="10" />
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
-              <ellipse key={deg} cx="50" cy="25" rx="5" ry="14" transform={`rotate(${deg} 50 50)`} />
-            ))}
-          </svg>
+          {/* Groom Card: Details on Left, Groom on Right */}
+          <div className="couple-card groom groom-layout">
+            <svg className="mandala-watermark" viewBox="0 0 100 100" fill="none" stroke="#d4af37" strokeWidth="0.8">
+              <circle cx="50" cy="50" r="45" />
+              <circle cx="50" cy="50" r="30" strokeDasharray="3 3" />
+              <circle cx="50" cy="50" r="10" />
+              {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+                <ellipse key={deg} cx="50" cy="25" rx="5" ry="14" transform={`rotate(${deg} 50 50)`} />
+              ))}
+            </svg>
 
-          {/* Left Side: Groom Details */}
-          <div className="card-info-content">
-            <p className="font-caps-sub" style={{ fontSize: '0.66rem' }}>THE GROOM</p>
-            <h3 className="couple-name font-serif-title">R. Sunil Kumar</h3>
-            <p className="couple-blessing">With Divine Blessings...</p>
-            <div className="parent-badge">
-              S/o Mr. Rajendran &amp; Mrs. Prema
-            </div>
-          </div>
-
-          {/* Right Side: Traditional Cartoon Groom Illustration */}
-          <img
-            src="/images/cartoon_groom_clean.webp"
-            alt="Traditional South Indian Groom"
-            className="card-cartoon-character groom-char"
-            loading="eager"
-            decoding="async"
-            draggable={false}
-          />
-        </div>
-
-        {/* Delicate Heart Divider */}
-        <div className="heart-divider">&hearts;</div>
-
-        {/* Bride Card: Bride on Left, Details on Right */}
-        <div className="couple-card bride bride-layout">
-          <svg className="mandala-watermark left" viewBox="0 0 100 100" fill="none" stroke="#d4af37" strokeWidth="0.8">
-            <circle cx="50" cy="50" r="45" />
-            <circle cx="50" cy="50" r="30" strokeDasharray="3 3" />
-            <circle cx="50" cy="50" r="10" />
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
-              <ellipse key={deg} cx="50" cy="25" rx="5" ry="14" transform={`rotate(${deg} 50 50)`} />
-            ))}
-          </svg>
-
-          {/* Left Side: Traditional Cartoon Bride Illustration in Saree */}
-          <img
-            src="/images/cartoon_bride_clean.webp"
-            alt="Traditional South Indian Bride in Saree"
-            className="card-cartoon-character bride-char"
-            loading="eager"
-            decoding="async"
-            draggable={false}
-          />
-
-          {/* Right Side: Bride Details */}
-          <div className="card-info-content">
-            <p className="font-caps-sub" style={{ fontSize: '0.66rem' }}>THE BRIDE</p>
-            <h3 className="couple-name font-serif-title">P. Santhiya</h3>
-            <p className="couple-blessing">In the presence of love...</p>
-            <div className="parent-badge">
-              D/o Mr. Perumal &amp; Mrs. Poornam
-            </div>
-          </div>
-        </div>
-
-        {/* Quote Card */}
-        <div className="quote-card">
-          <p className="quote-text font-serif-title">
-            &ldquo;Under the divine canopy of eternal grace, two souls unite in sacred matrimony.&rdquo;
-          </p>
-          <p className="compliments-tag">
-            &mdash; WITH BEST COMPLIMENTS FROM BOTH FAMILIES &mdash;
-          </p>
-        </div>
-      </section>
-
-      {/* =========================================================
-          3. COUNTDOWN & SACRED GATES
-          ========================================================= */}
-      <section className="section countdown-section fade-in-section">
-        <div className="countdown-content">
-          <p className="font-caps-sub">JOIN THE CELEBRATION</p>
-          <h2 className="section-title font-serif-title">Counting Down the Days</h2>
-          <p className="countdown-intro-text">
-            Tap the sacred center ring to swing the golden sanctuary gates open
-          </p>
-
-          {/* Interactive Sanctuary Gates */}
-          <div className={`gates-wrapper ${countdownGatesOpen ? 'opened' : ''}`}>
-            {/* Content Revealed Behind the Gates */}
-            <div className="gates-reveal">
-              <span className="gates-reveal-tag">OUR WEDDING DAY</span>
-              <b className="gates-reveal-date font-serif-title">Friday, 13th November 2026</b>
-              <span className="gates-reveal-time">Muhurtham: 5:00 AM – 7:00 AM</span>
-
-              {/* Live Ticking Countdown */}
-              <div className="timer-boxes">
-                <div className="timer-box">
-                  <span className="timer-val">{countdown.days}</span>
-                  <span className="timer-label">DAYS</span>
-                </div>
-                <div className="timer-box">
-                  <span className="timer-val">{countdown.hours}</span>
-                  <span className="timer-label">HOURS</span>
-                </div>
-                <div className="timer-box">
-                  <span className="timer-val">{countdown.mins}</span>
-                  <span className="timer-label">MINS</span>
-                </div>
-                <div className="timer-box">
-                  <span className="timer-val">{countdown.secs}</span>
-                  <span className="timer-label">SECS</span>
-                </div>
+            {/* Left Side: Groom Details */}
+            <div className="card-info-content">
+              <p className="font-caps-sub" style={{ fontSize: '0.66rem' }}>THE GROOM</p>
+              <h3 className="couple-name font-serif-title">R. Sunil Kumar</h3>
+              <p className="couple-blessing">With Divine Blessings...</p>
+              <div className="parent-badge">
+                S/o Mr. Rajendran &amp; Mrs. Prema
               </div>
             </div>
 
-            {/* Red Maroon Sanctuary Doors */}
-            <div className="door door-left"></div>
-            <div className="door door-right"></div>
-
-            {/* Central Golden Medallion Ring */}
-            <button
-              className="gates-ring-btn"
-              onClick={() => setCountdownGatesOpen(true)}
-              aria-label="Open sanctuary gates"
-            >
-              <span className="gates-ring-om">&#2384;</span>
-              <span className="gates-ring-text">OPEN</span>
-            </button>
+            {/* Right Side: Traditional Cartoon Groom Illustration */}
+            <img
+              src="/images/cartoon_groom_clean.webp"
+              alt="Traditional South Indian Groom"
+              className="card-cartoon-character groom-char"
+              loading="eager"
+              decoding="async"
+              draggable={false}
+            />
           </div>
-        </div>
-      </section>
 
-      {/* =========================================================
+          {/* Delicate Heart Divider */}
+          <div className="heart-divider">&hearts;</div>
+
+          {/* Bride Card: Bride on Left, Details on Right */}
+          <div className="couple-card bride bride-layout">
+            <svg className="mandala-watermark left" viewBox="0 0 100 100" fill="none" stroke="#d4af37" strokeWidth="0.8">
+              <circle cx="50" cy="50" r="45" />
+              <circle cx="50" cy="50" r="30" strokeDasharray="3 3" />
+              <circle cx="50" cy="50" r="10" />
+              {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+                <ellipse key={deg} cx="50" cy="25" rx="5" ry="14" transform={`rotate(${deg} 50 50)`} />
+              ))}
+            </svg>
+
+            {/* Left Side: Traditional Cartoon Bride Illustration in Saree */}
+            <img
+              src="/images/cartoon_bride_clean.webp"
+              alt="Traditional South Indian Bride in Saree"
+              className="card-cartoon-character bride-char"
+              loading="eager"
+              decoding="async"
+              draggable={false}
+            />
+
+            {/* Right Side: Bride Details */}
+            <div className="card-info-content">
+              <p className="font-caps-sub" style={{ fontSize: '0.66rem' }}>THE BRIDE</p>
+              <h3 className="couple-name font-serif-title">P. Santhiya</h3>
+              <p className="couple-blessing">In the presence of love...</p>
+              <div className="parent-badge">
+                D/o Mr. Perumal &amp; Mrs. Poornam
+              </div>
+            </div>
+          </div>
+
+          {/* Quote Card */}
+          <div className="quote-card">
+            <p className="quote-text font-serif-title">
+              &ldquo;Under the divine canopy of eternal grace, two souls unite in sacred matrimony.&rdquo;
+            </p>
+            <p className="compliments-tag">
+              &mdash; WITH BEST COMPLIMENTS FROM BOTH FAMILIES &mdash;
+            </p>
+          </div>
+        </section>
+
+        {/* =========================================================
+          3. COUNTDOWN & SACRED GATES
+          ========================================================= */}
+        <section className="section countdown-section fade-in-section">
+          <div className="countdown-content">
+            <p className="font-caps-sub">JOIN THE CELEBRATION</p>
+            <h2 className="section-title font-serif-title">Counting Down the Days</h2>
+            <p className="countdown-intro-text">
+              Tap the sacred center ring to swing the golden sanctuary gates open
+            </p>
+
+            {/* Interactive Sanctuary Gates */}
+            <div className={`gates-wrapper ${countdownGatesOpen ? 'opened' : ''}`}>
+              {/* Content Revealed Behind the Gates */}
+              <div className="gates-reveal">
+                <span className="gates-reveal-tag">OUR WEDDING DAY</span>
+                <b className="gates-reveal-date font-serif-title">Friday, 13th November 2026</b>
+                <span className="gates-reveal-time">Muhurtham: 5:00 AM – 7:00 AM</span>
+
+                {/* Live Ticking Countdown */}
+                <div className="timer-boxes">
+                  <div className="timer-box">
+                    <span className="timer-val">{countdown.days}</span>
+                    <span className="timer-label">DAYS</span>
+                  </div>
+                  <div className="timer-box">
+                    <span className="timer-val">{countdown.hours}</span>
+                    <span className="timer-label">HOURS</span>
+                  </div>
+                  <div className="timer-box">
+                    <span className="timer-val">{countdown.mins}</span>
+                    <span className="timer-label">MINS</span>
+                  </div>
+                  <div className="timer-box">
+                    <span className="timer-val">{countdown.secs}</span>
+                    <span className="timer-label">SECS</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Red Maroon Sanctuary Doors */}
+              <div className="door door-left"></div>
+              <div className="door door-right"></div>
+
+              {/* Central Golden Medallion Ring */}
+              <button
+                className="gates-ring-btn"
+                onClick={() => setCountdownGatesOpen(true)}
+                aria-label="Open sanctuary gates"
+              >
+                <span className="gates-ring-om">&#2384;</span>
+                <span className="gates-ring-text">OPEN</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================
           4. WEDDING EVENTS SECTION
           ========================================================= */}
-      <section className="section events-section fade-in-section">
-        {/* Unified Overhead Traditional Hanging Diyas & Lotus (No Background, Movable) */}
-        <MovableHangingDiyas />
+        <section className="section events-section fade-in-section">
+          {/* Unified Overhead Traditional Hanging Diyas & Lotus (No Background, Movable) */}
+          <MovableHangingDiyas />
 
-        <p className="font-caps-sub">THE CELEBRATION</p>
-        <h2 className="section-title font-serif-title">Wedding Events</h2>
-        <div className="gold-accent-line"></div>
+          <p className="font-caps-sub">THE CELEBRATION</p>
+          <h2 className="section-title font-serif-title">Wedding Events</h2>
+          <div className="gold-accent-line"></div>
 
-        {/* Event 1: Wedding Ceremony */}
-        <div className="event-card">
-          {/* Top Left Corner Peacock Feather (Facing Down-to-Up) */}
-          <img
-            src="/images/peacock_feather_transparent.webp"
-            alt=""
-            className="event-corner-peacock"
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-          />
+          {/* Event 1: Wedding Ceremony */}
+          <div className="event-card">
+            {/* Top Left Corner Peacock Feather (Facing Down-to-Up) */}
+            <img
+              src="/images/peacock_feather_transparent.webp"
+              alt=""
+              className="event-corner-peacock"
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+            />
 
-          <h3 className="event-title font-serif-title">Wedding Ceremony</h3>
+            <h3 className="event-title font-serif-title">Wedding Ceremony</h3>
 
-          <div className="event-detail-row">
-            <span className="event-detail-icon">&#128197;</span>
-            <div>
-              <strong>Friday, 13th November 2026</strong>
+            <div className="event-detail-row">
+              <span className="event-detail-icon">&#128197;</span>
+              <div>
+                <strong>Friday, 13th November 2026</strong>
+              </div>
             </div>
+
+            <div className="event-detail-row">
+              <span className="event-detail-icon">&#9200;</span>
+              <div>
+                <strong>5:00 AM – 7:00 AM (Muhurtham)</strong>
+              </div>
+            </div>
+
+            <div className="event-detail-row">
+              <span className="event-detail-icon">&#128205;</span>
+              <div>
+                <span className="event-venue-strong">Guruvayur Sri Krishna Temple</span>
+                <span className="event-venue-sub">Keralam</span>
+              </div>
+            </div>
+
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Guruvayur+Sri+Krishna+Temple+Kerala"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="event-btn"
+            >
+              VIEW LOCATION MAP
+            </a>
+
+            <a
+              href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sunil+Kumar+%26+Santhiya+Wedding&dates=20261112T233000Z/20261113T013000Z&location=Guruvayur+Sri+Krishna+Temple,+Keralam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="event-btn secondary"
+            >
+              ADD TO CALENDAR
+            </a>
           </div>
 
-          <div className="event-detail-row">
-            <span className="event-detail-icon">&#9200;</span>
-            <div>
-              <strong>5:00 AM – 7:00 AM (Muhurtham)</strong>
+          {/* Event 2: Grand Reception */}
+          <div className="event-card">
+            {/* Top Left Corner Peacock Feather (Facing Down-to-Up) */}
+            <img
+              src="/images/peacock_feather_transparent.webp"
+              alt=""
+              className="event-corner-peacock"
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+            />
+
+            <h3 className="event-title font-serif-title">Grand Reception</h3>
+
+            <div className="event-detail-row">
+              <span className="event-detail-icon">&#128197;</span>
+              <div>
+                <strong>Sunday, 15th November 2026</strong>
+              </div>
             </div>
-          </div>
 
-          <div className="event-detail-row">
-            <span className="event-detail-icon">&#128205;</span>
-            <div>
-              <span className="event-venue-strong">Guruvayur Sri Krishna Temple</span>
-              <span className="event-venue-sub">Keralam</span>
+            <div className="event-detail-row">
+              <span className="event-detail-icon">&#9200;</span>
+              <div>
+                <strong>6:00 PM – 9:00 PM Onwards</strong>
+              </div>
             </div>
-          </div>
 
-          <a
-            href="https://www.google.com/maps/search/?api=1&query=Guruvayur+Sri+Krishna+Temple+Kerala"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="event-btn"
-          >
-            VIEW LOCATION MAP
-          </a>
-
-          <a
-            href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sunil+Kumar+%26+Santhiya+Wedding&dates=20261112T233000Z/20261113T013000Z&location=Guruvayur+Sri+Krishna+Temple,+Keralam"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="event-btn secondary"
-          >
-            ADD TO CALENDAR
-          </a>
-        </div>
-
-        {/* Event 2: Grand Reception */}
-        <div className="event-card">
-          {/* Top Left Corner Peacock Feather (Facing Down-to-Up) */}
-          <img
-            src="/images/peacock_feather_transparent.webp"
-            alt=""
-            className="event-corner-peacock"
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-          />
-
-          <h3 className="event-title font-serif-title">Grand Reception</h3>
-
-          <div className="event-detail-row">
-            <span className="event-detail-icon">&#128197;</span>
-            <div>
-              <strong>Sunday, 15th November 2026</strong>
+            <div className="event-detail-row">
+              <span className="event-detail-icon">&#128205;</span>
+              <div>
+                <span className="event-venue-strong">Bharathi Function Hall</span>
+                <span className="event-venue-sub">Samalapuram</span>
+              </div>
             </div>
+
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Bharathi+Function+Hall+Samalapuram"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="event-btn"
+            >
+              VIEW LOCATION MAP
+            </a>
+
+            <a
+              href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sunil+%26+Santhiya+Reception&dates=20261115T123000Z/20261115T153000Z&location=Bharathi+Function+Hall,+Samalapuram"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="event-btn secondary"
+            >
+              ADD TO CALENDAR
+            </a>
           </div>
+        </section>
 
-          <div className="event-detail-row">
-            <span className="event-detail-icon">&#9200;</span>
-            <div>
-              <strong>6:00 PM – 9:00 PM Onwards</strong>
-            </div>
-          </div>
-
-          <div className="event-detail-row">
-            <span className="event-detail-icon">&#128205;</span>
-            <div>
-              <span className="event-venue-strong">Bharathi Function Hall</span>
-              <span className="event-venue-sub">Samalapuram</span>
-            </div>
-          </div>
-
-          <a
-            href="https://www.google.com/maps/search/?api=1&query=Bharathi+Function+Hall+Samalapuram"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="event-btn"
-          >
-            VIEW LOCATION MAP
-          </a>
-
-          <a
-            href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sunil+%26+Santhiya+Reception&dates=20261115T123000Z/20261115T153000Z&location=Bharathi+Function+Hall,+Samalapuram"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="event-btn secondary"
-          >
-            ADD TO CALENDAR
-          </a>
-        </div>
-      </section>
-
-      {/* =========================================================
+        {/* =========================================================
           5. REDESIGNED THANK YOU & CELEBRATION FOOTER (Matching Image 2)
           ========================================================= */}
-      <section className="section thankyou-redesigned-section fade-in-section">
-        {/* Overhead Hanging Floral Garland with Baubles and Fairy Lights (No Background, Movable) */}
-        <MovableThankYouGarland />
+        <section className="section thankyou-redesigned-section fade-in-section">
+          {/* Overhead Hanging Floral Garland with Baubles and Fairy Lights (No Background, Movable) */}
+          <MovableThankYouGarland />
 
-        {/* Center Auspicious Mangal Kalash (Image 2) */}
-        <div className="mangal-kalash-container">
-          <img
-            src="/images/mangal_kalash_top.jpg"
-            alt="Sacred Mangal Kalash"
-            className="mangal-kalash-avatar"
-          />
-        </div>
-
-        {/* With Gratitude & Thank You Typography (Image 2) */}
-        <p className="font-caps-sub thankyou-gratitude-tag">WITH GRATITUDE</p>
-        <h2 className="thankyou-cursive-title font-serif-title">Thank You</h2>
-
-        <div className="thankyou-gold-line"></div>
-
-        <p className="thankyou-honor-text">
-          It is the greatest honor to have you as part of our story. We can&apos;t wait to celebrate with you!
-        </p>
-
-        {/* Couple Names Flanked by Auspicious Leaf & Floral Kalash Pots (Image 2) */}
-        <div className="thankyou-couple-flank-row">
-          <div className="flank-pot-box left">
-            <KalashFlowerPot className="pot-svg" />
+          {/* Center Auspicious Mangal Kalash (Image 2) */}
+          <div className="mangal-kalash-container">
+            <img
+              src="/images/mangal_kalash_top.jpg"
+              alt="Sacred Mangal Kalash"
+              className="mangal-kalash-avatar"
+            />
           </div>
 
-          <div className="thankyou-couple-center">
-            <span className="ty-couple-name font-serif-title">Sunil</span>
-            <span className="ty-couple-amp">&amp;</span>
-            <span className="ty-couple-name font-serif-title">Santhiya</span>
+          {/* With Gratitude & Thank You Typography (Image 2) */}
+          <p className="font-caps-sub thankyou-gratitude-tag">WITH GRATITUDE</p>
+          <h2 className="thankyou-cursive-title font-serif-title">Thank You</h2>
+
+          <div className="thankyou-gold-line"></div>
+
+          <p className="thankyou-honor-text">
+            It is the greatest honor to have you as part of our story. We can&apos;t wait to celebrate with you!
+          </p>
+
+          {/* Couple Names Flanked by Auspicious Leaf & Floral Kalash Pots (Image 2) */}
+          <div className="thankyou-couple-flank-row">
+            <div className="flank-pot-box left">
+              <KalashFlowerPot className="pot-svg" />
+            </div>
+
+            <div className="thankyou-couple-center">
+              <span className="ty-couple-name font-serif-title">Sunil</span>
+              <span className="ty-couple-amp">&amp;</span>
+              <span className="ty-couple-name font-serif-title">Santhiya</span>
+            </div>
+
+            <div className="flank-pot-box right">
+              <KalashFlowerPot className="pot-svg" />
+            </div>
           </div>
 
-          <div className="flank-pot-box right">
-            <KalashFlowerPot className="pot-svg" />
+          <div className="thankyou-gold-line subtle"></div>
+
+          <p className="thankyou-wishes-text">
+            Wishing you a lifetime of love and happiness.
+          </p>
+
+          <p className="thankyou-signature-credits">
+            WITH LOVE &bull; MR. RAJENDRAN &amp; MRS. PREMA
+            <br />
+            MR. PERUMAL &amp; MRS. POORNAM
+            <br />
+            13 &bull; 11 &bull; 2026
+          </p>
+
+          {/* Traditional Royal Musicians Miniature Painting Footer (Image 2) */}
+          <div className="musicians-footer-section">
+            <img
+              src="/images/musicians_footer.webp"
+              alt="Royal Wedding Musicians Procession"
+              className="musicians-footer-illustration"
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+            />
           </div>
-        </div>
-
-        <div className="thankyou-gold-line subtle"></div>
-
-        <p className="thankyou-wishes-text">
-          Wishing you a lifetime of love and happiness.
-        </p>
-
-        <p className="thankyou-signature-credits">
-          WITH LOVE &bull; MR. RAJENDRAN &amp; MRS. PREMA
-          <br />
-          MR. PERUMAL &amp; MRS. POORNAM
-          <br />
-          13 &bull; 11 &bull; 2026
-        </p>
-
-        {/* Traditional Royal Musicians Miniature Painting Footer (Image 2) */}
-        <div className="musicians-footer-section">
-          <img
-            src="/images/musicians_footer.webp"
-            alt="Royal Wedding Musicians Procession"
-            className="musicians-footer-illustration"
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-          />
-        </div>
-      </section>
+        </section>
       </div>
 
       {/* =========================================================
